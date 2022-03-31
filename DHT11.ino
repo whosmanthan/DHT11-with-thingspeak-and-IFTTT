@@ -4,15 +4,16 @@
 #include <WiFiClientSecure.h>
 #include <ESP8266Webhook.h>
 
-#define KEY "cUZQmF6IxjNvsGh6LuxrcI"        // Webhooks Key
+#define KEY "XXXXXXXXXXXXXXXX"        // Webhooks Key
 
 // Webhooks Event Name
-#define EVENT1 "DHT11_EMAIL" 
-#define EVENT2 "DHT11_SMS"
+#define EVENT1 "EVENT 1 EMAIL" 
+#define EVENT2 "EVENT 2 SMS"
 
 WiFiClient client;     //define client
-long myChannelNumber = 1688811;
-const char myWriteAPIKey[] = "IJMRPR32QA7SRGKO";
+//ThingSpeak
+long myChannelNumber = ____________;
+const char myWriteAPIKey[] = "API KEY";
 
 DHT dht2(15,DHT11);
 Webhook webhook1(KEY, EVENT1);    // Create an object.
@@ -47,19 +48,15 @@ void loop() {
    ThingSpeak.writeField(myChannelNumber, 1, temp, myWriteAPIKey);
    ThingSpeak.writeField(myChannelNumber, 2, humidity, myWriteAPIKey);
 
- if (t >= 20 && h >= 20)
+ if (t >= 20 && h >= 20) // set threshold
   {
   webhook1.trigger(temp,humidity);
   webhook2.trigger(temp,humidity);
-  delay(360000);
+  delay(360000); // 5 min delay for Trigger
   }
   else 
   {
     return;
   }
  delay(1000);
-//// wittyBoard with ThingSpeak
-//  int value = analogRead(ldr);
-//  Serial.println(value);
-//  ThingSpeak.writeField(myChannelNumber, 1, value, myWriteAPIKey);
 }
